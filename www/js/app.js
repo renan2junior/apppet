@@ -32,42 +32,45 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     controller: 'AppCtrl'
   })
 
-  .state('app.search', {
-    url: '/search',
+  .state('app.meuregistro', {
+    url: '/meuregistro',
     views: {
       'menuContent': {
-        templateUrl: 'templates/search.html'
+        templateUrl: 'templates/meuregistro.html',
+        controller: 'meuregistroCTRL'
       }
     }
   })
 
-  .state('app.browse', {
-      url: '/browse',
+  .state('app.meuspets', {
+      url: '/meuspets',
       views: {
         'menuContent': {
-          templateUrl: 'templates/browse.html'
+          templateUrl: 'templates/meuspets.html',
+          controller:  'meuspetsCTRL' 
         }
       }
     })
-    .state('app.playlists', {
-      url: '/playlists',
+    .state('app.registropet', {
+      url: '/registropet',
       views: {
         'menuContent': {
-          templateUrl: 'templates/playlists.html',
-          controller: 'PlaylistsCtrl'
+          templateUrl: 'templates/registropet.html',
+          controller: 'registropetCTRL'
         }
       }
     })
+    
+    .state('app.buscapet', {
+      url: '/buscapet',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/buscapet.html',
+          controller: 'buscapetCTRL'
+        }
+      }
+    });
 
-  .state('app.single', {
-    url: '/playlists/:playlistId',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/playlist.html',
-        controller: 'PlaylistCtrl'
-      }
-    }
-  });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/playlists');
+  $urlRouterProvider.otherwise('/app/buscapet');
 });
