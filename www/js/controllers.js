@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['ngCordova'])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
 
@@ -47,8 +47,20 @@ angular.module('starter.controllers', [])
 .controller('meuspetsCTRL', function($scope, $stateParams) {
 })
 
-.controller('buscapetCTRL', function($scope, $stateParams) {
+.controller('buscapetCTRL', function($scope, $stateParams, $cordovaBarcodeScanner) {
+    
+     $scope.scanBarcode = function() {
+        $cordovaBarcodeScanner.scan().then(function(imageData) {
+            alert(imageData.text);
+            console.log("Barcode Format -> " + imageData.format);
+            console.log("Cancelled -> " + imageData.cancelled);
+        }, function(error) {
+            console.log("An error happened -> " + error);
+        });
+    };
+ 
 })
 
 .controller('registropetCTRL', function($scope, $stateParams) {
 });
+
