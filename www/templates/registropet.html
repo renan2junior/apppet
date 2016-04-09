@@ -1,5 +1,59 @@
 <ion-view view-title="Registro Pet">
   <ion-content>
-    
+     <form ng-submit="submit()">
+        <ion-card>
+            <ion-card-content id="pet_image" >
+                <div class="item item-body">
+                <img class="full-image" id="petImg" src="img/img-icon.png" />
+                <img id="petFoto" />
+                </div>
+            </ion-card-content>
+            <ion-item>
+                <button class="button button-block button-positive ion-camera" (click)="getPicture($event)" ></button>
+            </ion-item>
+        </ion-card>    
+         <label class="item item-input item-stacked-label">
+            <ion-label>Nome</ion-label>
+            <input type="text" value="" [ngFormControl]="petNome" placeholder="nome">
+         </label>
+        
+        <label class="item item-input item-stacked-label">
+            <ion-label>Sexo [macho, femea]</ion-label>
+            <input type="text" value="" [ngFormControl]="petSexo" placeholder="macho/femea" >
+        </label>
+        
+        <label class="item item-input item-stacked-label">
+            <ion-label>Idade</ion-label>
+            <input type="text" value="" [ngFormControl]="petIdade" placeholder="idade">
+        </label>
+        
+        <label class="item item-input item-stacked-label">
+            <ion-label>Tipo da Idade [dia, mes, ano]</ion-label>
+            <input type="text" value="" [ngFormControl]="petTipoIdade" placeholder="tipo">
+        </label>
+        
+        <label class="item item-input item-stacked-label">
+            <ion-label>Descrição</ion-label>
+            <input type="text" value="" [ngFormControl]="petDescricao" placeholder="descrição" >
+        </label>
+        
+        <label class="item item-input item-stacked-label">
+            <ion-label>Porte [pequeno, medio, grande]</ion-label>
+            <input type="text" value="" [ngFormControl]="petPorte" placeholder="pequeno/médio/grande">
+        </label>
+        
+        <label class="item item-input item-stacked-label">
+            <ion-label>Raça</ion-label>
+            <input type="text" value="" [ngFormControl]="petRaca" placeholder="raça">
+        </label>
+        
+        <label class="item item-input item-stacked-label">
+            <ion-label>Tipo [cachorro, gato, passaro, outros]</ion-label>
+            <input type="text" value="" [ngFormControl]="petTipo" placeholder="tioi" >
+        </label>
+       <ion-item>
+            <button type="submit" class="button button-block button-positive">Salvar</button>
+       </ion-item>
+    </form>
   </ion-content>
 </ion-view>

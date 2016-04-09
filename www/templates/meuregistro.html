@@ -1,6 +1,30 @@
 
 <ion-view view-title="Meu Registro">
-  <ion-content>
-    <h1>Meu Registro</h1>
+   <ion-content>
+    <form ng-submit="submit()">
+         <label class="item item-input item-stacked-label">
+            <ion-label>Nome</ion-label>
+            <input type="text" value="" [ngFormControl]="petNome" placeholder="nome">
+         </label>
+        <label class="item item-input item-stacked-label">
+            <ion-label>Número telefone fixo</ion-label>
+            <input type="text" value="" [ngFormControl]="petSexo" placeholder="(21)99999-99999" >
+        </label>
+        <label class="item item-input item-stacked-label">
+            <ion-label>Número telefone celular</ion-label>
+            <input type="text" value="" [ngFormControl]="petIdade" placeholder="(21)99999-99999">
+        </label>
+        <label class="item item-input item-stacked-label">
+            <ion-label>Email</ion-label>
+            <input type="text" value="" [ngFormControl]="petTipoIdade" placeholder="email">
+        </label>
+        <label class="item item-input item-stacked-label">
+            <ion-label>Endereço</ion-label>
+            <input type="text" value="" [ngFormControl]="petDescricao" placeholder="endereço" >
+        </label>
+       <ion-item>
+            <button type="submit" class="button button-block button-positive">Salvar</button>
+       </ion-item>
+    </form>
   </ion-content>
 </ion-view>
