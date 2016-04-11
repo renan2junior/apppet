@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','ngCordova', 'starter.controllers'])
+angular.module('starter', ['ionic','ngCordova', 'firebase', 'starter.controllers'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -21,6 +21,11 @@ angular.module('starter', ['ionic','ngCordova', 'starter.controllers'])
     }
   });
 })
+// Factory for login with facebook.
+.factory("Auth", function($firebaseAuth) {
+  var usersRef = new Firebase("https://apppetidentidade.firebaseio.com/users");
+  return $firebaseAuth(usersRef);
+})
 
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
@@ -30,6 +35,16 @@ angular.module('starter', ['ionic','ngCordova', 'starter.controllers'])
     abstract: true,
     templateUrl: 'templates/menu.html',
     controller: 'AppCtrl'
+  })
+  
+  .state('app.loginfb',{
+      url:'/loginfb',
+      views:{
+          'menuContent':{
+              templateUrl : 'templates/loginFB.html',
+              controller  : 'loginFBCTRL'
+          }
+      }
   })
 
   .state('app.meuregistro', {
