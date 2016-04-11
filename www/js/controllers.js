@@ -42,45 +42,104 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 .controller('loginFBCTRL',function($scope, $stateParams, Auth){
-   $scope.loginfb = function() {
-   /*    
-    Auth.$authWithOAuthPopup("facebook").then(function(authData) {
-        console.log(authData);
-    });
-    */
-
-    Auth.$authWithOAuthRedirect("facebook").then(function(authData) {
-      // User successfully logged in
-    }).catch(function(error) {
-        
-      if (error.code === "TRANSPORT_UNAVAILABLE") {
-        Auth.$authWithOAuthPopup("facebook").then(function(authData) {
-          // User successfully logged in. We can log to the console
-          // since we’re using a popup here
-          console.log(authData);
+    $scope.loginfb = function() {
+        Auth.$authWithOAuthRedirect("facebook").then(function(authData) {
+        // User successfully logged in
+        }).catch(function(error) {
+            
+        if (error.code === "TRANSPORT_UNAVAILABLE") {
+            Auth.$authWithOAuthPopup("facebook").then(function(authData) {
+            // User successfully logged in. We can log to the console
+            // since we’re using a popup here
+            console.log(authData);
+            });
+        } else {
+            // Another error occurred
+            console.log(error);
+        }
         });
-      } else {
-        // Another error occurred
-        console.log(error);
-      }
-    });
-
-};
+    }
 })
 
 .controller('meuregistroCTRL', function($scope, $stateParams, Auth) {
-    Auth.$onAuth(function(authData) {
-  if (authData === null) {
-    console.log("Not logged in yet");
-  } else {
-    console.log("Logged in as", authData.uid);
-    console.log( " " , authData.facebook.displayName);
-  }
-  $scope.authData = authData; // This will display the user's name in our view
-});
+   
+   
+   
+    Auth.$onAuth(function(authData){
+        if(authData === null){
+            console.log("Not logged in yet");
+        }else{
+            console.log("Logged in as", authData.uid);
+            console.log( " " , authData.facebook.displayName);
+            console.log( " " , authData.facebook.profileImageURL);
+        }
+        $scope.authData = authData; 
+    });
+    
+    
+     $scope.btsave = function(){
+
+        var ref = new Firebase("https://apppetidentidade.firebaseio.com/");
+
+        var objUser = {
+            displayName : $scope.authData.facebook.displayName,
+            id : $scope.authData.facebook.id,
+            imageUrl : $scope.authData.facebook.profileImageURL,
+            teste : 'Teste'
+        };
+
+        //localStorage.setItem("login", angular.toJson($scope.authData));
+        
+        var usuario = ref.child("users");
+        
+        var id_user = usuario.child(btoa(objUser.id));
+        
+        if(!id_user){
+            usuario.child(btoa(objUser.id)).set(objUser);
+        }else{
+            id_user.update(objUser);
+            console.log("O id é : ", id_user.toString());
+        }
+    }
 })
 
-.controller('meuspetsCTRL', function($scope, $stateParams) {
+.controller('meuspetsCTRL', function($scope, $stateParams, Pets, Auth) {
+    
+    var ref = new Firebase("https://apppetidentidade.firebaseio.com/");
+
+    $scope.pets_list =  Pets;
+
+   Auth.$onAuth(function(authData){
+        if(authData === null){
+            console.log("Not logged in yet");
+        }else{
+            console.log("Logged in as", authData.uid);
+            console.log( " " , authData.facebook.displayName);
+            console.log( " " , authData.facebook.profileImageURL);
+        }
+        $scope.authData = authData; 
+    });
+
+    // console.log("Id : " , $scope.authData.facebook.id);
+
+    $scope.addPet = function(){
+        var Pet = {
+                pet_name : 'Toto4',
+                pet_racao : 'Vira-lata',
+                pet_user_id : $scope.authData.facebook.id,
+                pet_idade : '2 anos'
+            }
+        
+        var pets = ref.child("pets");
+        var pet = pets.child(Pet.pet_name);
+    
+        if(!pet){
+                pets.child(Pet.pet_name.set(Pet));
+            }else{
+                pet.update(Pet);
+                console.log("O id é : ", pet.toString());
+            }
+    }
 })
 
 .controller('buscapetCTRL', function($scope, $stateParams, $cordovaBarcodeScanner) {

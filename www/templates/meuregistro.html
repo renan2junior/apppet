@@ -3,13 +3,13 @@
    <ion-content>
        <div class="card" >
                 <div class="item item-text-wrap">
-                    Hello {{authData.facebook.displayName}}!
+                    <img src="{{authData.facebook.profileImageURL}}" />
                 </div>
             </div>
     <form ng-submit="submit()">
          <label class="item item-input item-stacked-label">
             <ion-label>Nome</ion-label>
-            <input type="text" value="" [ngFormControl]="petNome" placeholder="nome">
+            <input type="text" value="{{authData.facebook.displayName}}" [ngFormControl]="petNome" placeholder="nome">
          </label>
         <label class="item item-input item-stacked-label">
             <ion-label>Número telefone fixo</ion-label>
@@ -21,14 +21,14 @@
         </label>
         <label class="item item-input item-stacked-label">
             <ion-label>Email</ion-label>
-            <input type="text" value="" [ngFormControl]="petTipoIdade" placeholder="email">
+            <input type="text" value="{{authData.facebook.email}}" [ngFormControl]="petTipoIdade" placeholder="email">
         </label>
         <label class="item item-input item-stacked-label">
             <ion-label>Endereço</ion-label>
             <input type="text" value="" [ngFormControl]="petDescricao" placeholder="endereço" >
         </label>
        <ion-item>
-            <button type="submit" class="button button-block button-positive">Salvar</button>
+            <button type="submit" ng-click="btsave()" class="button button-block button-positive">Salvar</button>
        </ion-item>
     </form>
   </ion-content>

@@ -1,18 +1,13 @@
 <ion-view view-title="Meus Pets">
   <ion-content>
-   <div class="list">
-
-    <a class="item item-thumbnail-left" href="#">
-      <img src="img/pastor.jpg">
-      <h2>Cartor</h2>
-      <p>Pastor Alemão</p>
-    </a>
-
-    <a class="item item-thumbnail-left" href="#">
-      <img src="img/poodle.jpg">
-      <h2>Totó</h2>
-      <p>Poodle</p>
-    </a>
-</div>
+      <button class="button button-icon ion-plus" ng-click="addPet()">
+      <ion-list>
+        <ion-item ng-repeat="pet_linha in pets_list">
+              {{pet_linha.pet_name}}
+              {{pet_linha.pet_user_id}}
+        </ion-item>
+  </ion-list>
+     
+  
   </ion-content>
 </ion-view>
