@@ -1,6 +1,11 @@
 
 <ion-view view-title="Meu Registro">
    <ion-content>
+       <div class="card" >
+                <div class="item item-text-wrap">
+                    Hello {{authData.facebook.displayName}}!
+                </div>
+            </div>
     <form ng-submit="submit()">
          <label class="item item-input item-stacked-label">
             <ion-label>Nome</ion-label>

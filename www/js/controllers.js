@@ -41,13 +41,43 @@ angular.module('starter.controllers', ['ngCordova'])
   };
 })
 
-.controller('loginFBCTRL',function($scope, $stateParams, $firebaseAuth){
-    $scope.login = function() {
-        Auth.$authWithOAuthRedirect("facebook");
+.controller('loginFBCTRL',function($scope, $stateParams, Auth){
+   $scope.loginfb = function() {
+   /*    
+    Auth.$authWithOAuthPopup("facebook").then(function(authData) {
+        console.log(authData);
+    });
+    */
+
+    Auth.$authWithOAuthRedirect("facebook").then(function(authData) {
+      // User successfully logged in
+    }).catch(function(error) {
+        
+      if (error.code === "TRANSPORT_UNAVAILABLE") {
+        Auth.$authWithOAuthPopup("facebook").then(function(authData) {
+          // User successfully logged in. We can log to the console
+          // since we’re using a popup here
+          console.log(authData);
+        });
+      } else {
+        // Another error occurred
+        console.log(error);
+      }
+    });
+
 };
 })
 
-.controller('meuregistroCTRL', function($scope, $stateParams) {
+.controller('meuregistroCTRL', function($scope, $stateParams, Auth) {
+    Auth.$onAuth(function(authData) {
+  if (authData === null) {
+    console.log("Not logged in yet");
+  } else {
+    console.log("Logged in as", authData.uid);
+    console.log( " " , authData.facebook.displayName);
+  }
+  $scope.authData = authData; // This will display the user's name in our view
+});
 })
 
 .controller('meuspetsCTRL', function($scope, $stateParams) {
