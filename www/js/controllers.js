@@ -3,30 +3,18 @@ angular.module('starter.controllers', ['ngCordova'])
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, Auth) {
 
   $scope.loginData = {};
-
-  // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login.html', {
     scope: $scope
   }).then(function(modal) {
     $scope.modal = modal;
   });
-
-  // Triggered in the login modal to close it
   $scope.closeLogin = function() {
     $scope.modal.hide();
   };
-
-  // Open the login modal
   $scope.login = function() {
     $scope.modal.show();
   };
-
-  // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
-
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
     $timeout(function() {
       $scope.closeLogin();
     }, 1000);
@@ -36,17 +24,12 @@ angular.module('starter.controllers', ['ngCordova'])
 .controller('loginFBCTRL',function($scope, $stateParams, Auth){
     $scope.loginfb = function() {
         Auth.$authWithOAuthRedirect("facebook").then(function(authData) {
-        // User successfully logged in
         }).catch(function(error) {
-            
         if (error.code === "TRANSPORT_UNAVAILABLE") {
             Auth.$authWithOAuthPopup("facebook").then(function(authData) {
-            // User successfully logged in. We can log to the console
-            // since we’re using a popup here
             console.log(authData);
             });
         } else {
-            // Another error occurred
             console.log(error);
         }
         });
@@ -54,52 +37,44 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 .controller('meuregistroCTRL', function($scope, $stateParams, Auth) {
-   
-   
-   
     Auth.$onAuth(function(authData){
         if(authData === null){
             console.log("Not logged in yet");
         }else{
             console.log("Logged in as", authData.uid);
-            console.log( " " , authData.facebook.displayName);
-            console.log( " " , authData.facebook.profileImageURL);
         }
         $scope.authData = authData; 
     });
     
+    var usuario = {
+        id : '',
+        nome : '',
+        avatar : '',
+        celular : '21 99998888',
+        fixo : '21 33339999',
+        endereco : 'Rua Tal',
+        email : 'meu@gmail.com'
+    }
+     $scope.dados = usuario;
     
      $scope.btsave = function(){
-
         var ref = new Firebase("https://apppetidentidade.firebaseio.com/");
-
-        var objUser = {
-            displayName : $scope.authData.facebook.displayName,
-            id : $scope.authData.facebook.id,
-            imageUrl : $scope.authData.facebook.profileImageURL,
-            teste : 'Teste'
-        };
-
-        //localStorage.setItem("login", angular.toJson($scope.authData));
-        
+        $scope.dados.nome = $scope.authData.facebook.displayName;
+        $scope.dados.id = $scope.authData.facebook.id;
+        $scope.dados.avatar = $scope.authData.facebook.profileImageURL;
         var usuario = ref.child("users");
-        
-        var id_user = usuario.child(btoa(objUser.id));
-        
+        var id_user = usuario.child(btoa($scope.dados.id.id));
         if(!id_user){
-            usuario.child(btoa(objUser.id)).set(objUser);
+            usuario.child(btoa($scope.dados.id)).set($scope.dados);
         }else{
-            id_user.update(objUser);
+            id_user.update($scope.dados);
             console.log("O id é : ", id_user.toString());
         }
     }
 })
 
 .controller('meuspetsCTRL', function($scope, $stateParams,$ionicLoading, Pets, Auth, Trial) {
-    
     $scope.pets_list =  Pets;
-    
-
    Auth.$onAuth(function(authData){
         if(authData === null){
             console.log("Not logged in yet");
@@ -110,13 +85,9 @@ angular.module('starter.controllers', ['ngCordova'])
         }
         $scope.authData = authData; 
     });
-
-
-    
 })
 
 .controller('buscapetCTRL', function($scope, $stateParams, $cordovaBarcodeScanner) {
-    
      $scope.scanBarcode = function() {
         $cordovaBarcodeScanner.scan().then(function(imageData) {
             alert(imageData.text);
@@ -126,13 +97,10 @@ angular.module('starter.controllers', ['ngCordova'])
             console.log("An error happened -> " + error);
         });
     };
- 
 })
 
 .controller('registropetCTRL', function($scope, $stateParams, $cordovaCamera, Trial) {
-    
   var ref = new Firebase("https://apppetidentidade.firebaseio.com/"); 
-    
    // Class Pet
    var Pet = {
                 pet_name: 'Toto',
@@ -147,9 +115,6 @@ angular.module('starter.controllers', ['ngCordova'])
                 pet_tipo:'cao'
    }
    $scope.dados = Pet;        
-   
-  
-
    // Save pet    
    $scope.savepet = function(){
        console.log("nome pet :", $scope.dados.pet_name);
@@ -163,7 +128,6 @@ angular.module('starter.controllers', ['ngCordova'])
                 console.log("O id é : ", $scope.dados.toString());
             }
    }
-    
    // upload image 
    $scope.uploadImage = function() {
     var options = {
