@@ -1,13 +1,15 @@
 <ion-view view-title="Meus Pets">
   <ion-content>
-      <button class="button button-icon ion-plus" ng-click="addPet()">
       <ion-list>
         <ion-item ng-repeat="pet_linha in pets_list">
-              {{pet_linha.pet_name}}
-              {{pet_linha.pet_user_id}}
+              <div class="list">
+                <a class="item item-thumbnail-left" href="#">
+                <img src="{{pet_linha.pet_image}}">
+                <h2> {{pet_linha.pet_name}}</h2>
+                <p> {{pet_linha.pet_descricao}}</p>
+                </a>
+            </div>
         </ion-item>
-  </ion-list>
-     
-  
+      </ion-list>
   </ion-content>
 </ion-view>

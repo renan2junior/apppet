@@ -2,57 +2,55 @@
   <ion-content>
      <form ng-submit="submit()">
         <ion-card>
-            <ion-card-content id="pet_image" >
-                <div class="item item-body">
-                <img class="full-image" id="petImg" src="img/img-icon.png" />
-                <img id="petFoto" />
+                <div class="row">
+                    <div class="col"><div id="qrcode"></div></div>
+                    <div class=".col-50"><img src="{{dados.pet_image}}" height="100" width="100"></div>
                 </div>
-            </ion-card-content>
             <ion-item>
-                <button class="button button-block button-positive ion-camera" (click)="getPicture($event)" ></button>
+                <button class="button button-block button-positive ion-camera" ng-click="uploadImage()" ></button>
             </ion-item>
         </ion-card>    
          <label class="item item-input item-stacked-label">
             <ion-label>Nome</ion-label>
-            <input type="text" value="" [ngFormControl]="petNome" placeholder="nome">
+            <input type="text" value="Toto " id="nomepet" ng-model="dados.pet_name" placeholder="nome">
          </label>
         
         <label class="item item-input item-stacked-label">
             <ion-label>Sexo [macho, femea]</ion-label>
-            <input type="text" value="" [ngFormControl]="petSexo" placeholder="macho/femea" >
+            <input type="text" value="macho" ng-model="dados.pet_sexo" placeholder="macho/femea" >
         </label>
         
         <label class="item item-input item-stacked-label">
             <ion-label>Idade</ion-label>
-            <input type="text" value="" [ngFormControl]="petIdade" placeholder="idade">
+            <input type="text" value="3" ng-model="dados.pet_idade" placeholder="idade">
         </label>
         
         <label class="item item-input item-stacked-label">
             <ion-label>Tipo da Idade [dia, mes, ano]</ion-label>
-            <input type="text" value="" [ngFormControl]="petTipoIdade" placeholder="tipo">
+            <input type="text" value="anos" ng-model="dados.pet_tipo_idade" placeholder="tipo">
         </label>
         
         <label class="item item-input item-stacked-label">
             <ion-label>Descrição</ion-label>
-            <input type="text" value="" [ngFormControl]="petDescricao" placeholder="descrição" >
+            <input type="text" value="Bom" ng-model="dados.pet_descricao" placeholder="descrição" >
         </label>
         
         <label class="item item-input item-stacked-label">
             <ion-label>Porte [pequeno, medio, grande]</ion-label>
-            <input type="text" value="" [ngFormControl]="petPorte" placeholder="pequeno/médio/grande">
+            <input type="text" value="medio" ng-model="dados.pet_porte" placeholder="pequeno/médio/grande">
         </label>
         
         <label class="item item-input item-stacked-label">
             <ion-label>Raça</ion-label>
-            <input type="text" value="" [ngFormControl]="petRaca" placeholder="raça">
+            <input type="text" value="Vira-lata" ng-model="dados.pet_raca" placeholder="raça">
         </label>
         
         <label class="item item-input item-stacked-label">
             <ion-label>Tipo [cachorro, gato, passaro, outros]</ion-label>
-            <input type="text" value="" [ngFormControl]="petTipo" placeholder="tioi" >
+            <input type="text" value="cao" ng-model="dados.pet_tipo" placeholder="tioi" >
         </label>
        <ion-item>
-            <button type="submit" class="button button-block button-positive">Salvar</button>
+            <button type="submit" ng-click="savepet()" class="button button-block button-positive">Salvar</button>
        </ion-item>
     </form>
   </ion-content>

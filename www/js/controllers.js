@@ -2,14 +2,6 @@ angular.module('starter.controllers', ['ngCordova'])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, Auth) {
 
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-
-  // Form data for the login modal
   $scope.loginData = {};
 
   // Create the login modal that we will use later
@@ -103,11 +95,10 @@ angular.module('starter.controllers', ['ngCordova'])
     }
 })
 
-.controller('meuspetsCTRL', function($scope, $stateParams, Pets, Auth) {
+.controller('meuspetsCTRL', function($scope, $stateParams,$ionicLoading, Pets, Auth, Trial) {
     
-    var ref = new Firebase("https://apppetidentidade.firebaseio.com/");
-
     $scope.pets_list =  Pets;
+    
 
    Auth.$onAuth(function(authData){
         if(authData === null){
@@ -120,26 +111,8 @@ angular.module('starter.controllers', ['ngCordova'])
         $scope.authData = authData; 
     });
 
-    // console.log("Id : " , $scope.authData.facebook.id);
 
-    $scope.addPet = function(){
-        var Pet = {
-                pet_name : 'Toto4',
-                pet_racao : 'Vira-lata',
-                pet_user_id : $scope.authData.facebook.id,
-                pet_idade : '2 anos'
-            }
-        
-        var pets = ref.child("pets");
-        var pet = pets.child(Pet.pet_name);
     
-        if(!pet){
-                pets.child(Pet.pet_name.set(Pet));
-            }else{
-                pet.update(Pet);
-                console.log("O id é : ", pet.toString());
-            }
-    }
 })
 
 .controller('buscapetCTRL', function($scope, $stateParams, $cordovaBarcodeScanner) {
@@ -156,6 +129,82 @@ angular.module('starter.controllers', ['ngCordova'])
  
 })
 
-.controller('registropetCTRL', function($scope, $stateParams) {
+.controller('registropetCTRL', function($scope, $stateParams, $cordovaCamera, Trial) {
+    
+  var ref = new Firebase("https://apppetidentidade.firebaseio.com/"); 
+    
+   // Class Pet
+   var Pet = {
+                pet_name: 'Toto',
+                pet_racao: 'Rui',
+                pet_idade: '2',
+                pet_image: 'http://thewatchfullepisodes.com/wp-content/uploads/2016/03/no-image.png',
+                pet_sexo:'macho',
+                pet_tipo_idade:'anos',
+                pet_descricao:'Bom',
+                pet_porte:'pequeno',
+                pet_raca:'Viralata',
+                pet_tipo:'cao'
+   }
+   $scope.dados = Pet;        
+   
+  
+
+   // Save pet    
+   $scope.savepet = function(){
+       console.log("nome pet :", $scope.dados.pet_name);
+       console.log("pet      :", $scope.dados);
+       var pets = ref.child("pets");
+       var pet = pets.child($scope.dados.pet_name);
+        if(!pet){
+                pets.child($scope.dados.pet_name.set($scope.dados));
+            }else{
+                pet.update($scope.dados);
+                console.log("O id é : ", $scope.dados.toString());
+            }
+   }
+    
+   // upload image 
+   $scope.uploadImage = function() {
+    var options = {
+      quality: 50,
+      destinationType: Camera.DestinationType.DATA_URL,
+      sourceType: Camera.PictureSourceType.CAMERA,
+      allowEdit: false,
+      encodingType: Camera.EncodingType.JPEG,
+      targetWidth: 300,
+      targetHeight: 300,
+      popoverOptions: CameraPopoverOptions,
+      saveToPhotoAlbum: false,
+	  correctOrientation:true
+    };
+
+    $cordovaCamera.getPicture(options).then(function(imageData) {
+      var petimageUrl = "data:image/jpeg;base64," + imageData ;
+      $scope.dados.pet_image = petimageUrl;
+    }, function(err) {
+      alert("Erro : " + err);
+    });
+   }
+   
+   
+   // QRCode generator
+   var qrcode = new QRCode("qrcode",{
+        width: 100,
+        height: 100,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+    });
+
+    function makeCode () {
+        console.log($scope.dados.pet_name);      
+        qrcode.makeCode($scope.dados.pet_name);
+    }
+   makeCode();
+   
+   
+   
+   
 });
 
