@@ -1,14 +1,11 @@
 <ion-view view-title="Meus Pets">
   <ion-content>
       <ion-list>
-        <ion-item ng-repeat="pet_linha in pets_list">
-              <div class="list">
-                <a class="item item-thumbnail-left" href="#">
-                <img src="{{pet_linha.pet_image}}">
+        <ion-item ng-repeat="pet_linha in pets_list" href="#/app/detalhes_pet/{{pet_linha.pet_name}}">
+                <img width="150" height="150" src="{{pet_linha.pet_image}}">
                 <h2> {{pet_linha.pet_name}}</h2>
                 <p> {{pet_linha.pet_descricao}}</p>
                 </a>
-            </div>
         </ion-item>
       </ion-list>
   </ion-content>

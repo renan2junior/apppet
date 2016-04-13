@@ -143,6 +143,16 @@ angular.module('starter', ['ionic', 'firebase','ngCordova', 'starter.controllers
         }
       }
     })
+    .state('app.detalhes_pet',{
+        url : '/detalhes_pet/:pet_name',
+         views: {
+            'menuContent': {
+            templateUrl : 'templates/detalhes_pet.html',
+            controller : 'detalhesCTRL'
+            }
+         }
+    })
+    
     .state('app.registropet', {
       url: '/registropet',
       views: {

@@ -73,23 +73,30 @@ angular.module('starter.controllers', ['ngCordova'])
     }
 })
 
-.controller('meuspetsCTRL', function($scope, $stateParams,$ionicLoading, Pets, Auth) {
+.controller('meuspetsCTRL', function($scope, $stateParams,$ionicLoading, Pets) {
     $scope.pets_list =  Pets;
 })
 
+.controller('detalhesCTRL', function($scope, $stateParams, Pet) {
+    
+    $scope.pet_busca = Pet.get($stateParams.pet_name);
+    
+})
+
 .controller('buscapetCTRL', function($scope, $stateParams, $cordovaBarcodeScanner, Pet) {
-    /*
+    
     $scope.pet_busca = '';
+    $scope.result = false;
     
      $scope.scanBarcode = function() {
         $cordovaBarcodeScanner.scan().then(function(imageData) {
-            $scope.pet_busca = Pet.get(imageData.text);    
-            alert(imageData.text);
+            $scope.pet_busca = Pet.get(imageData.text);
+            $scope.result = true;    
         }, function(error) {
             console.log("An error happened -> " + error);
         });
     };
-    */
+    
 })
 
 .controller('registropetCTRL', function($scope, $stateParams, $cordovaCamera) {

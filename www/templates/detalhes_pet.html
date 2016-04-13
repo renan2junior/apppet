@@ -1,10 +1,7 @@
-<ion-view view-title="Busca">
+<ion-view view-title="Detalhe Pet">
     <ion-content>
-        <ion-item>
-            <button class="button button-block button-positive" ng-click="result=true; scanBarcode()" >Ache o pet</button>
-        </ion-item>
-        <ion-item ng-show="result">
-           <ion-card>
+        <ion-item >
+          <ion-card>
                 <div class="row">
                     <div class="col"><div id="qrcode"></div></div>
                     <div class=".col-50"><img src="{{pet_busca.pet_image}}" height="100" width="100"></div>
