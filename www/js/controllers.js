@@ -36,6 +36,29 @@ angular.module('starter.controllers', ['ngCordova'])
     }
 })
 
+.controller('chatCTRL', function($scope, $state, $firebaseArray, Auth) {
+    Auth.$onAuth(function(authData){
+        $scope.authData = authData; 
+        if(authData === null){
+            $scope.name = "Anonimo";
+            alert($scope.name);
+            console.log("Not logged in yet");
+        }else{
+            $scope.name = $scope.authData.facebook.displayName;
+            alert($scope.name);
+            console.log("Logged in as", authData.uid);
+        }
+     });
+    var ref = new Firebase("https://apppetidentidade.firebaseio.com/chat");    
+    $scope.messages = $firebaseArray(ref);
+    $scope.addMessage = function(e) {
+    $scope.sendMsg = function() {
+            $scope.messages.$add({from: $scope.name, body: $scope.msg});
+            $scope.msg = "";
+        }
+    } 
+})
+
 .controller('meuregistroCTRL', function($scope, $stateParams, Auth) {
     Auth.$onAuth(function(authData){
         if(authData === null){
@@ -45,7 +68,6 @@ angular.module('starter.controllers', ['ngCordova'])
         }
         $scope.authData = authData; 
     });
-    
     var usuario = {
         id : '',
         nome : '',
@@ -84,43 +106,20 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 .controller('buscapetCTRL', function($scope, $stateParams, $cordovaBarcodeScanner, Pet) {
-    
     $scope.pet_busca = '';
     $scope.result = false;
-    
      $scope.scanBarcode = function() {
         $cordovaBarcodeScanner.scan().then(function(imageData) {
             $scope.pet_busca = Pet.get(imageData.text);
-            $scope.result = true;    
+            if($scope.pet_busca){
+                $scope.result = true;    
+            }else{
+                alert("Pet não encontrado !");
+            }
         }, function(error) {
             console.log("An error happened -> " + error);
         });
     };
-    
-})
-.controller('chatCTRL', function($scope, $state, $firebaseArray) {
-  
-  
-   var ref = new Firebase("https://apppetidentidade.firebaseio.com/pets");
-   
-   
-         //$scope.messages = $firebase(ref);
-         $scope.messages = $firebaseArray(ref);
-         $scope.addMessage = function(e) {
-         $scope.sendMsg = function() {
-             
-                  $scope.messages.$add({from: $scope.name, body: $scope.msg});
-                  $scope.msg = "";
-           
-                }
-        }
-        $scope.clear = function(){
-          $scope.name = "";
-        }
-     
-        
-  console.log('chatCTRL');
-  
 })
 
 .controller('registropetCTRL', function($scope, $stateParams, $cordovaCamera) {
@@ -190,9 +189,5 @@ angular.module('starter.controllers', ['ngCordova'])
         qrcode.makeCode($scope.dados.pet_name);
     }
    makeCode();
-   
-   
-   
-   
 });
 

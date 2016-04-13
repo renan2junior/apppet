@@ -1,4 +1,4 @@
-<ion-view title="Home">
+<ion-view title="Chat">
         <ion-content class="padding">
            <div ng-controller="chatCTRL">
           
@@ -10,7 +10,7 @@
    				  </div>
              
               <div class="list">
-   					<input type="text" ng-model="name" placeholder="Name">
+   					<label ng-model="name" placeholder="Name">
    					<input type="text" ng-model="msg" ng-keydown="addMessage($event)" placeholder="Message...">
              </div>
                 <button class="button button-full button-positive" ng-click="sendMsg()">  Send  </button>
