@@ -37,14 +37,14 @@ angular.module('starter', ['ionic', 'firebase','ngCordova', 'starter.controllers
     var fb = new Firebase('https://apppetidentidade.firebaseio.com/');
     return $firebaseref(fb);
 })
-.factory('Trial', function ($firebaseObject) {
+.factory('Pet', function ($firebaseObject) {
     var ref = new Firebase("https://apppetidentidade.firebaseio.com/pets");
-    var Trial = {
-        get: function (trialId) {
-            return $firebaseObject(ref.child(trialId));
+    var Pet = {
+        get: function (petId) {
+            return $firebaseObject(ref.child(petId));
         }
     };
-    return Trial;
+    return Pet;
 })
 .factory('customeInterceptor',['$timeout','$injector', '$q',function($timeout, $injector, $q) {
   

@@ -73,33 +73,26 @@ angular.module('starter.controllers', ['ngCordova'])
     }
 })
 
-.controller('meuspetsCTRL', function($scope, $stateParams,$ionicLoading, Pets, Auth, Trial) {
+.controller('meuspetsCTRL', function($scope, $stateParams,$ionicLoading, Pets, Auth) {
     $scope.pets_list =  Pets;
-   Auth.$onAuth(function(authData){
-        if(authData === null){
-            console.log("Not logged in yet");
-        }else{
-            console.log("Logged in as", authData.uid);
-            console.log( " " , authData.facebook.displayName);
-            console.log( " " , authData.facebook.profileImageURL);
-        }
-        $scope.authData = authData; 
-    });
 })
 
-.controller('buscapetCTRL', function($scope, $stateParams, $cordovaBarcodeScanner) {
+.controller('buscapetCTRL', function($scope, $stateParams, $cordovaBarcodeScanner, Pet) {
+    /*
+    $scope.pet_busca = '';
+    
      $scope.scanBarcode = function() {
         $cordovaBarcodeScanner.scan().then(function(imageData) {
+            $scope.pet_busca = Pet.get(imageData.text);    
             alert(imageData.text);
-            console.log("Barcode Format -> " + imageData.format);
-            console.log("Cancelled -> " + imageData.cancelled);
         }, function(error) {
             console.log("An error happened -> " + error);
         });
     };
+    */
 })
 
-.controller('registropetCTRL', function($scope, $stateParams, $cordovaCamera, Trial) {
+.controller('registropetCTRL', function($scope, $stateParams, $cordovaCamera) {
   var ref = new Firebase("https://apppetidentidade.firebaseio.com/"); 
    // Class Pet
    var Pet = {
