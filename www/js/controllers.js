@@ -1,25 +1,39 @@
 angular.module('starter.controllers', ['ngCordova'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, Auth) {
-
-  $scope.loginData = {};
-  $ionicModal.fromTemplateUrl('templates/login.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
-  $scope.closeLogin = function() {
-    $scope.modal.hide();
-  };
-  $scope.login = function() {
-    $scope.modal.show();
-  };
-  $scope.doLogin = function() {
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
-  };
+.controller('AppCtrl', function($scope,$state, $ionicModal, $timeout, Auth) {
+    var ref = new Firebase("https://apppetidentidade.firebaseio.com/");
+    $scope.doLogout = function(){
+        ref.unauth();
+        $state.go('welcome');
+    }    
 })
+
+.controller('WelcomeCtrl', function($scope, $state, $ionicLoading, Auth) {
+
+       $scope.loginfb = function() {
+        Auth.$authWithOAuthRedirect("facebook").then(function(authData) {
+        }).catch(function(error) {
+        if (error.code === "TRANSPORT_UNAVAILABLE") {
+            Auth.$authWithOAuthPopup("facebook").then(function(authData) {
+            console.log(authData);
+            });
+        } else {
+            console.log(error);
+        }
+        });
+    }
+    
+    Auth.$onAuth(function(authData){
+        $scope.authData = authData; 
+        if(authData === null){
+            console.log("Not logged in yet");
+        }else{
+            console.log("Logged in as", authData.uid);
+            $state.go('app.buscapet');
+        }
+     });
+})
+
 
 .controller('loginFBCTRL',function($scope, $stateParams, Auth){
     $scope.loginfb = function() {
@@ -189,5 +203,6 @@ angular.module('starter.controllers', ['ngCordova'])
         qrcode.makeCode($scope.dados.pet_name);
     }
    makeCode();
+   
 });
 

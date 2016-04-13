@@ -18,10 +18,6 @@
     </ion-header-bar>
     <ion-content>
       <ion-list>
-        <ion-item menu-close ng-click="login()">
-          Login
-        </ion-item>
-       
         <ion-item menu-close href="#/app/registropet">
           Registro Pet
         </ion-item>
@@ -37,8 +33,8 @@
          <ion-item menu-close href="#/app/chat">
           Chat
         </ion-item>
-         <ion-item menu-close href="#/app/loginfb">
-            Login Facebook
+         <ion-item menu-close ng-click="doLogout()">
+            Logout
         </ion-item>
       </ion-list>
     </ion-content>

@@ -1,29 +1,18 @@
-// Ionic Starter App
-
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-// 'starter.controllers' is found in controllers.js
-
 var fb = new Firebase('https://apppetidentidade.firebaseio.com/');
-
-angular.module('starter', ['ionic', 'firebase','ngCordova', 'starter.controllers'])
+angular.module('starter', ['ionic', 'firebase','ngCordova','starter.controllers'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
-
     }
     if (window.StatusBar) {
-      // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
   });
 })
+
 // Factory for login with facebook.
 .factory("Auth", function($firebaseAuth) {
   var usersRef = new Firebase("https://apppetidentidade.firebaseio.com/users");
@@ -47,9 +36,7 @@ angular.module('starter', ['ionic', 'firebase','ngCordova', 'starter.controllers
     return Pet;
 })
 .factory('customeInterceptor',['$timeout','$injector', '$q',function($timeout, $injector, $q) {
-  
   var requestInitiated;
-
   function showLoadingText() {
     $injector.get("$ionicLoading").show({
       template: 'Loading...',
@@ -57,11 +44,9 @@ angular.module('starter', ['ionic', 'firebase','ngCordova', 'starter.controllers
       showBackdrop: true
     });
   };
-  
   function hideLoadingText(){
     $injector.get("$ionicLoading").hide();
   };
-
   return {
     request : function(config) {
       requestInitiated = true;
@@ -71,16 +56,11 @@ angular.module('starter', ['ionic', 'firebase','ngCordova', 'starter.controllers
     },
     response : function(response) {
       requestInitiated = false;
-        
-      // Show delay of 300ms so the popup will not appear for multiple http request
       $timeout(function() {
-
         if(requestInitiated) return;
         hideLoadingText();
         console.log('Response received with interceptor');
-
       },300);
-      
       return response;
     },
     requestError : function (err) {
@@ -94,26 +74,23 @@ angular.module('starter', ['ionic', 'firebase','ngCordova', 'starter.controllers
       return $q.reject(err);
     }
   }
-    }])
-
-
-
-
+}])
 
 .config(function($stateProvider, $urlRouterProvider,$httpProvider) {
-  
   $httpProvider.interceptors.push('customeInterceptor');
-   $urlRouterProvider.otherwise('/');  
-    
+  $urlRouterProvider.otherwise('/');  
   $stateProvider
-
-    .state('app', {
+   .state('welcome', {
+        url: '/welcome',
+        templateUrl: "templates/welcome.html",
+        controller: 'WelcomeCtrl'
+  })
+  .state('app', {
     url: '/app',
     abstract: true,
     templateUrl: 'templates/menu.html',
     controller: 'AppCtrl'
   })
-  
   .state('app.loginfb',{
       url:'/loginfb',
       views:{
@@ -123,7 +100,6 @@ angular.module('starter', ['ionic', 'firebase','ngCordova', 'starter.controllers
           }
       }
   })
-
   .state('app.meuregistro', {
     url: '/meuregistro',
     views: {
@@ -133,7 +109,6 @@ angular.module('starter', ['ionic', 'firebase','ngCordova', 'starter.controllers
       }
     }
   })
-
   .state('app.meuspets', {
       url: '/meuspets',
       views: {
@@ -152,7 +127,6 @@ angular.module('starter', ['ionic', 'firebase','ngCordova', 'starter.controllers
             }
          }
     })
-    
     .state('app.registropet', {
       url: '/registropet',
       views: {
@@ -162,7 +136,6 @@ angular.module('starter', ['ionic', 'firebase','ngCordova', 'starter.controllers
         }
       }
     })
-    
     .state('app.chat', {
       url: '/chat',
       views: {
@@ -172,7 +145,6 @@ angular.module('starter', ['ionic', 'firebase','ngCordova', 'starter.controllers
         }
       }
     })
-    
     .state('app.buscapet', {
       url: '/buscapet',
       views: {
@@ -182,7 +154,5 @@ angular.module('starter', ['ionic', 'firebase','ngCordova', 'starter.controllers
         }
       }
     });
-
-  // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/buscapet');
+  $urlRouterProvider.otherwise('/welcome');
 });
