@@ -163,6 +163,16 @@ angular.module('starter', ['ionic', 'firebase','ngCordova', 'starter.controllers
       }
     })
     
+    .state('app.chat', {
+      url: '/chat',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/chat.html',
+          controller: 'chatCTRL'
+        }
+      }
+    })
+    
     .state('app.buscapet', {
       url: '/buscapet',
       views: {

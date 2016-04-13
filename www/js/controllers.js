@@ -98,6 +98,30 @@ angular.module('starter.controllers', ['ngCordova'])
     };
     
 })
+.controller('chatCTRL', function($scope, $state, $firebaseArray) {
+  
+  
+   var ref = new Firebase("https://apppetidentidade.firebaseio.com/pets");
+   
+   
+         //$scope.messages = $firebase(ref);
+         $scope.messages = $firebaseArray(ref);
+         $scope.addMessage = function(e) {
+         $scope.sendMsg = function() {
+             
+                  $scope.messages.$add({from: $scope.name, body: $scope.msg});
+                  $scope.msg = "";
+           
+                }
+        }
+        $scope.clear = function(){
+          $scope.name = "";
+        }
+     
+        
+  console.log('chatCTRL');
+  
+})
 
 .controller('registropetCTRL', function($scope, $stateParams, $cordovaCamera) {
   var ref = new Firebase("https://apppetidentidade.firebaseio.com/"); 
