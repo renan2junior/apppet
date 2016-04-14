@@ -55,11 +55,9 @@ angular.module('starter.controllers', ['ngCordova'])
         $scope.authData = authData; 
         if(authData === null){
             $scope.name = "Anonimo";
-            alert($scope.name);
             console.log("Not logged in yet");
         }else{
             $scope.name = $scope.authData.facebook.displayName;
-            alert($scope.name);
             console.log("Logged in as", authData.uid);
         }
      });

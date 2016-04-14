@@ -1,35 +1,30 @@
 
-<ion-view view-title="Meu Registro">
+<ion-view view-title="Meu Registro" >
    <ion-content>
-       <div class="card" >
-                <div class="item item-text-wrap">
-                    <img src="{{authData.facebook.profileImageURL}}" />
-                </div>
-            </div>
-    <form ng-submit="submit()">
-         <label class="item item-input item-stacked-label">
-            <ion-label>Nome</ion-label>
-            <input type="text" value="{{authData.facebook.displayName}}" [ngFormControl]="petNome" placeholder="nome">
-         </label>
-        <label class="item item-input item-stacked-label">
-            <ion-label>Número telefone fixo</ion-label>
-            <input type="text" value="" ng-model="dados.fixo" placeholder="(21)99999-99999" >
-        </label>
-        <label class="item item-input item-stacked-label">
-            <ion-label>Número telefone celular</ion-label>
-            <input type="text" value="" ng-model="dados.celular" placeholder="(21)99999-99999">
-        </label>
-        <label class="item item-input item-stacked-label">
-            <ion-label>Email</ion-label>
-            <input type="text" ng-model="dados.email" [ngFormControl]="petTipoIdade" placeholder="email">
-        </label>
-        <label class="item item-input item-stacked-label">
-            <ion-label>Endereço</ion-label>
-            <input type="text" value="" ng-model="dados.endereco" placeholder="endereço" >
-        </label>
-       <ion-item>
-            <button type="submit" ng-click="btsave()" class="button button-block button-positive">Salvar</button>
-       </ion-item>
-    </form>
+        <div class="item item-avatar">
+            <img  src="{{authData.facebook.profileImageURL}}" />
+            <h2>{{authData.facebook.displayName}}</h2>
+        </div>
+        <form ng-submit="submit()">
+            <label class="item item-input item-stacked-label">
+                <ion-label>Número telefone fixo</ion-label>
+                <input type="text" value="" ng-model="dados.fixo" placeholder="(21)99999-99999" >
+            </label>
+            <label class="item item-input item-stacked-label">
+                <ion-label>Número telefone celular</ion-label>
+                <input type="text" value="" ng-model="dados.celular" placeholder="(21)99999-99999">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <ion-label>Email</ion-label>
+                <input type="text" ng-model="dados.email" [ngFormControl]="petTipoIdade" placeholder="email">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <ion-label>Endereço</ion-label>
+                <input type="text" value="" ng-model="dados.endereco" placeholder="endereço" >
+            </label>
+            <ion-item>
+                    <button type="submit" ng-click="btsave()" class="button button-block button-dark">Salvar</button>
+            </ion-item>
+        </form>
   </ion-content>
 </ion-view>

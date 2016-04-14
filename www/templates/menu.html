@@ -13,27 +13,33 @@
   </ion-side-menu-content>
 
   <ion-side-menu side="left">
-    <ion-header-bar class="bar-stable">
+    <ion-header-bar class="bar-stable bar-assertive">
       <h1 class="title">Menu</h1>
     </ion-header-bar>
     <ion-content>
       <ion-list>
-        <ion-item menu-close href="#/app/registropet">
-          Registro Pet
-        </ion-item>
         <ion-item menu-close href="#/app/meuregistro">
+        <i class="ion-person"></i>
           Meu registro
         </ion-item>
         <ion-item menu-close href="#/app/meuspets">
+        <i class="ion-clipboard"></i>
           Meus Pets
         </ion-item>
+        <ion-item menu-close href="#/app/registropet">
+        <i class="ion-ios-plus-outline"></i>
+          Registro Pet
+        </ion-item>
         <ion-item menu-close href="#/app/buscapet">
+        <i class="ion-android-search"></i>
           Busca Pet
         </ion-item>
-         <ion-item menu-close href="#/app/chat">
-          Chat
-        </ion-item>
-         <ion-item menu-close ng-click="doLogout()">
+         <ion-item menu-close  href="#/app/chat">
+            <i class="ion-chatboxes"></i>
+                Bate papo
+            </ion-item>
+         <ion-item menu-close  ng-click="doLogout()">
+             <i class="ion-android-walk"></i>
             Logout
         </ion-item>
       </ion-list>
