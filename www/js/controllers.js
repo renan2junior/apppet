@@ -112,9 +112,18 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 .controller('detalhesCTRL', function($scope, $stateParams, Pet) {
+   // QRCode generator
+   var qrcode = new QRCode("qrcode",{
+        width: 100,
+        height: 100,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+    });
+    qrcode.makeCode($stateParams.pet_name);
     
     $scope.pet_busca = Pet.get($stateParams.pet_name);
-    
+
 })
 
 .controller('buscapetCTRL', function($scope, $stateParams, $cordovaBarcodeScanner, Pet) {
@@ -124,7 +133,21 @@ angular.module('starter.controllers', ['ngCordova'])
         $cordovaBarcodeScanner.scan().then(function(imageData) {
             $scope.pet_busca = Pet.get(imageData.text);
             if($scope.pet_busca){
-                $scope.result = true;    
+                $scope.result = true;
+                // QRCode generator
+                var qrcode = new QRCode("qrcode",{
+                        width: 100,
+                        height: 100,
+                        colorDark : "#000000",
+                        colorLight : "#ffffff",
+                        correctLevel : QRCode.CorrectLevel.H
+                    });
+
+                function makeCode () {
+                    console.log($scope.pet_busca.pet_name);      
+                    qrcode.makeCode($scope.pet_busca.pet_name);
+                }
+                makeCode();    
             }else{
                 alert("Pet não encontrado !");
             }

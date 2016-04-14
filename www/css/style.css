@@ -7,18 +7,24 @@
     background-color: #b34e4e;
     color: white;
 }
-.body {
-}
 
-.ion-content {
-}
-
-.backgroudAmarelo{
-}
-
-.item .item-content {
+.ion-content
+{
+    background-color: green;
 }
 
 wellcome{
     background-color: #b34e4e;
+}
+
+.login {
+    background: url(../img/welcome.png);
+    background-repeat: repeat;
+    background-size: contain;
+    background-position: center;
+    width: 100%;
+    height: 100%;
+    margin: 0%;
+    z-index: 2;
+    position: absolute;
 }
