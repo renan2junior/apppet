@@ -1,5 +1,5 @@
 var fb = new Firebase('https://apppetidentidade.firebaseio.com/');
-angular.module('starter', ['ionic', 'firebase','ngCordova','starter.controllers'])
+angular.module('starter', ['ionic', 'firebase','ngCordova','starter.configs','starter.services','starter.controllers'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -12,69 +12,6 @@ angular.module('starter', ['ionic', 'firebase','ngCordova','starter.controllers'
     }
   });
 })
-
-// Factory for login with facebook.
-.factory("Auth", function($firebaseAuth) {
-  var usersRef = new Firebase("https://apppetidentidade.firebaseio.com/users");
-  return $firebaseAuth(usersRef);
-})
-.factory("Pets", function($firebaseArray) {
-  var petsRef = new Firebase("https://apppetidentidade.firebaseio.com/pets");
-  return $firebaseArray(petsRef);
-})
-.factory("Firebase", function($firebaseref){
-    var fb = new Firebase('https://apppetidentidade.firebaseio.com/');
-    return $firebaseref(fb);
-})
-.factory('Pet', function ($firebaseObject) {
-    var ref = new Firebase("https://apppetidentidade.firebaseio.com/pets");
-    var Pet = {
-        get: function (petId) {
-            return $firebaseObject(ref.child(petId));
-        }
-    };
-    return Pet;
-})
-.factory('customeInterceptor',['$timeout','$injector', '$q',function($timeout, $injector, $q) {
-  var requestInitiated;
-  function showLoadingText() {
-    $injector.get("$ionicLoading").show({
-      template: 'Loading...',
-      animation: 'fade-in',
-      showBackdrop: true
-    });
-  };
-  function hideLoadingText(){
-    $injector.get("$ionicLoading").hide();
-  };
-  return {
-    request : function(config) {
-      requestInitiated = true;
-      showLoadingText();
-      console.log('Request Initiated with interceptor');
-      return config;
-    },
-    response : function(response) {
-      requestInitiated = false;
-      $timeout(function() {
-        if(requestInitiated) return;
-        hideLoadingText();
-        console.log('Response received with interceptor');
-      },300);
-      return response;
-    },
-    requestError : function (err) {
-      hideLoadingText();
-      console.log('Request Error logging via interceptor');
-      return err;
-    },
-    responseError : function (err) {
-      hideLoadingText();
-      console.log('Response error via interceptor');
-      return $q.reject(err);
-    }
-  }
-}])
 
 .config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   $httpProvider.interceptors.push('customeInterceptor');

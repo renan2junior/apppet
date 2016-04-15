@@ -1,15 +1,19 @@
 angular.module('starter.controllers', ['ngCordova'])
 
-.controller('AppCtrl', function($scope,$state, $ionicModal, $timeout, Auth) {
-    var ref = new Firebase("https://apppetidentidade.firebaseio.com/");
+.controller('AppCtrl', function($scope,$state, $ionicModal, $timeout,$ionicLoading, wsUserPet) {
     $scope.doLogout = function(){
-        ref.unauth();
+        wsUserPet.logout();
         $state.go('welcome');
-    }    
+    };
+     $scope.showLoader = function() {
+        $ionicLoading.show({template: 'Loading...'});
+    };
+    $scope.hideLoader = function() {
+        $ionicLoading.hide();
+    };
 })
 
 .controller('WelcomeCtrl', function($scope, $state, $ionicLoading, Auth) {
-
        $scope.loginfb = function() {
         Auth.$authWithOAuthRedirect("facebook").then(function(authData) {
         }).catch(function(error) {
@@ -22,7 +26,6 @@ angular.module('starter.controllers', ['ngCordova'])
         }
         });
     }
-    
     Auth.$onAuth(function(authData){
         $scope.authData = authData; 
         if(authData === null){
@@ -32,22 +35,6 @@ angular.module('starter.controllers', ['ngCordova'])
             $state.go('app.buscapet');
         }
      });
-})
-
-
-.controller('loginFBCTRL',function($scope, $stateParams, Auth){
-    $scope.loginfb = function() {
-        Auth.$authWithOAuthRedirect("facebook").then(function(authData) {
-        }).catch(function(error) {
-        if (error.code === "TRANSPORT_UNAVAILABLE") {
-            Auth.$authWithOAuthPopup("facebook").then(function(authData) {
-            console.log(authData);
-            });
-        } else {
-            console.log(error);
-        }
-        });
-    }
 })
 
 .controller('chatCTRL', function($scope, $state, $firebaseArray, Auth) {
@@ -71,44 +58,28 @@ angular.module('starter.controllers', ['ngCordova'])
     } 
 })
 
-.controller('meuregistroCTRL', function($scope, $stateParams, Auth) {
+.controller('meuregistroCTRL', function($scope, $stateParams, Auth, RefBase, Usuario) {
     Auth.$onAuth(function(authData){
-        if(authData === null){
-            console.log("Not logged in yet");
-        }else{
-            console.log("Logged in as", authData.uid);
-        }
         $scope.authData = authData; 
     });
-    var usuario = {
-        id : '',
-        nome : '',
-        avatar : '',
-        celular : '21 99998888',
-        fixo : '21 33339999',
-        endereco : 'Rua Tal',
-        email : 'meu@gmail.com'
-    }
-     $scope.dados = usuario;
-    
+   
+     $scope.dados = Usuario.new;
      $scope.btsave = function(){
-        var ref = new Firebase("https://apppetidentidade.firebaseio.com/");
         $scope.dados.nome = $scope.authData.facebook.displayName;
         $scope.dados.id = $scope.authData.facebook.id;
         $scope.dados.avatar = $scope.authData.facebook.profileImageURL;
-        var usuario = ref.child("users");
+        var usuario = RefBase.child("users");
         var id_user = usuario.child(btoa($scope.dados.id.id));
         if(!id_user){
             usuario.child(btoa($scope.dados.id)).set($scope.dados);
         }else{
             id_user.update($scope.dados);
-            console.log("O id é : ", id_user.toString());
         }
     }
 })
 
-.controller('meuspetsCTRL', function($scope, $stateParams,$ionicLoading, Pets) {
-    $scope.pets_list =  Pets;
+.controller('meuspetsCTRL', function($scope, $stateParams,$ionicLoading, wsPet) {
+    $scope.pets_list =  wsPet.getPets();
 })
 
 .controller('detalhesCTRL', function($scope, $stateParams, Pet) {
@@ -157,35 +128,25 @@ angular.module('starter.controllers', ['ngCordova'])
     };
 })
 
-.controller('registropetCTRL', function($scope, $stateParams, $cordovaCamera) {
-  var ref = new Firebase("https://apppetidentidade.firebaseio.com/"); 
-   // Class Pet
-   var Pet = {
-                pet_name: 'Toto',
-                pet_racao: 'Rui',
-                pet_idade: '2',
-                pet_image: 'http://thewatchfullepisodes.com/wp-content/uploads/2016/03/no-image.png',
-                pet_sexo:'macho',
-                pet_tipo_idade:'anos',
-                pet_descricao:'Bom',
-                pet_porte:'pequeno',
-                pet_raca:'Viralata',
-                pet_tipo:'cao'
-   }
-   $scope.dados = Pet;        
+.controller('registropetCTRL', function($scope, $stateParams, $cordovaCamera, Pet, RefBase) {
+   $scope.dados = Pet.new();        
    // Save pet    
    $scope.savepet = function(){
-       console.log("nome pet :", $scope.dados.pet_name);
-       console.log("pet      :", $scope.dados);
-       var pets = ref.child("pets");
+       $scope.showLoader();
+       var pets = RefBase.child("pets");
        var pet = pets.child($scope.dados.pet_name);
         if(!pet){
-                pets.child($scope.dados.pet_name.set($scope.dados));
+                pets.child($scope.dados.pet_name.set($scope.dados)).then(function(){
+                    $scope.dados.pet_name = " ";
+                    $scope.hideLoader();
+                });
             }else{
                 pet.update($scope.dados);
                 console.log("O id é : ", $scope.dados.toString());
             }
+            $scope.dados.pet_name = " ";
    }
+   
    // upload image 
    $scope.uploadImage = function() {
     var options = {
@@ -209,7 +170,6 @@ angular.module('starter.controllers', ['ngCordova'])
     });
    }
    
-   
    // QRCode generator
    var qrcode = new QRCode("qrcode",{
         width: 100,
@@ -224,6 +184,5 @@ angular.module('starter.controllers', ['ngCordova'])
         qrcode.makeCode($scope.dados.pet_name);
     }
    makeCode();
-   
 });
 
