@@ -22,6 +22,12 @@ angular.module('starter.services', [])
   return auth;
 })
 
+.factory("Chat", function($firebaseArray,WS_FIREBASE_CFG) {
+  var fbRef = WS_FIREBASE_CFG.baseRef;
+  var chat = $firebaseArray(fbRef.child('chat'));  
+  return chat;
+})
+
 .factory('wsPet',function(WS_FIREBASE_CFG, $firebaseArray, $firebaseObject) {
     var Pets = {
             get: function(pet_user){

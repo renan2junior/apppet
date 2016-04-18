@@ -37,19 +37,16 @@ angular.module('starter.controllers', ['ngCordova'])
      });
 })
 
-.controller('chatCTRL', function($scope, $state, $firebaseArray, Auth) {
+.controller('chatCTRL', function($scope, $state, $firebaseArray, Auth, Chat) {
     Auth.$onAuth(function(authData){
         $scope.authData = authData; 
         if(authData === null){
             $scope.name = "Anonimo";
-            console.log("Not logged in yet");
         }else{
             $scope.name = $scope.authData.facebook.displayName;
-            console.log("Logged in as", authData.uid);
         }
      });
-    var ref = new Firebase("https://apppetidentidade.firebaseio.com/chat");    
-    $scope.messages = $firebaseArray(ref);
+    $scope.messages = Chat;
     $scope.addMessage = function(e) {
     $scope.sendMsg = function() {
             $scope.messages.$add({from: $scope.name, body: $scope.msg});
