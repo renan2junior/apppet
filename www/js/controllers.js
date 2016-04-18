@@ -78,8 +78,18 @@ angular.module('starter.controllers', ['ngCordova'])
     }
 })
 
-.controller('meuspetsCTRL', function($scope, $stateParams,$ionicLoading, wsPet) {
-    $scope.pets_list =  wsPet.getPets();
+.controller('meuspetsCTRL', function($scope, $stateParams,$ionicLoading, wsPet, Auth) {
+   $scope.pets_list='';
+   // Dados do usuario
+   Auth.$onAuth(function(authData){
+        $scope.authData = authData;
+        if(authData === null){
+            $scope.name = "Anonimo";
+        }else{
+            $scope.name = $scope.authData.facebook.displayName;
+            $scope.pets_list =  wsPet.get($scope.authData.facebook.id);
+        }
+     });
 })
 
 .controller('detalhesCTRL', function($scope, $stateParams, Pet) {
@@ -92,9 +102,7 @@ angular.module('starter.controllers', ['ngCordova'])
         correctLevel : QRCode.CorrectLevel.H
     });
     qrcode.makeCode($stateParams.pet_name);
-    
     $scope.pet_busca = Pet.get($stateParams.pet_name);
-
 })
 
 .controller('buscapetCTRL', function($scope, $stateParams, $cordovaBarcodeScanner, Pet) {
@@ -128,14 +136,26 @@ angular.module('starter.controllers', ['ngCordova'])
     };
 })
 
-.controller('registropetCTRL', function($scope, $stateParams, $cordovaCamera, Pet, RefBase) {
-   $scope.dados = Pet.new();        
+.controller('registropetCTRL', function($scope, $stateParams, $cordovaCamera, Pet, RefBase, Auth) {
+   $scope.dados = Pet.new();
+   
+   // Dados do usuario
+   Auth.$onAuth(function(authData){
+        $scope.authData = authData; 
+        if(authData === null){
+            $scope.name = "Anonimo";
+        }else{
+            $scope.dados.pet_user = $scope.authData.facebook.id;
+        }
+    }); 
+           
    // Save pet    
    $scope.savepet = function(){
        $scope.showLoader();
        var pets = RefBase.child("pets");
        var pet = pets.child($scope.dados.pet_name);
         if(!pet){
+               
                 pets.child($scope.dados.pet_name.set($scope.dados)).then(function(){
                     $scope.dados.pet_name = " ";
                     $scope.hideLoader();

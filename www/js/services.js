@@ -23,11 +23,14 @@ angular.module('starter.services', [])
 })
 
 .factory('wsPet',function(WS_FIREBASE_CFG, $firebaseArray, $firebaseObject) {
-    return{
-        getPets: function(){
-            return $firebaseArray(WS_FIREBASE_CFG.baseRef.child('pets'))
-        }
-    }
+    var Pets = {
+            get: function(pet_user){
+            var refPets = WS_FIREBASE_CFG.baseRef.child('pets');
+            var refq = refPets.orderByChild("pet_user").equalTo(pet_user);
+            return $firebaseArray(refq);
+         }
+    };
+    return Pets;
 })
 
 .factory('RefBase', function(WS_FIREBASE_CFG){
@@ -51,7 +54,8 @@ angular.module('starter.services', [])
                 pet_descricao:'Bom',
                 pet_porte:'pequeno',
                 pet_raca:'Viralata',
-                pet_tipo:'cao'
+                pet_tipo:'cao',
+                pet_user:''
             }
             return new_pet;
         }
