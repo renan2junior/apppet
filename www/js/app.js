@@ -64,6 +64,15 @@ angular.module('starter', ['ionic', 'firebase','ngCordova','starter.configs','st
             }
          }
     })
+    .state('app.adocao', {
+      url: '/adocao',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/adocao.html',
+          controller:  'adocaoCTRL' 
+        }
+      }
+    })
     .state('app.registropet', {
       url: '/registropet',
       views: {

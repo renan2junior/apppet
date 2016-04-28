@@ -31,10 +31,14 @@ angular.module('starter.services', [])
 .factory('wsPet',function(WS_FIREBASE_CFG, $firebaseArray, $firebaseObject) {
     var Pets = {
             get: function(pet_user){
-            var refPets = WS_FIREBASE_CFG.baseRef.child('pets');
-            var refq = refPets.orderByChild("pet_user").equalTo(pet_user);
-            return $firebaseArray(refq);
-         }
+                var refPets = WS_FIREBASE_CFG.baseRef.child('pets');
+                var refq = refPets.orderByChild("pet_user").equalTo(pet_user);
+                return $firebaseArray(refq);
+            },
+            getAdocao: function () {
+                var refPets = WS_FIREBASE_CFG.baseRef.child('pets');
+                return $firebaseArray(refPets);
+            }                    
     };
     return Pets;
 })

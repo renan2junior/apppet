@@ -89,6 +89,11 @@ angular.module('starter.controllers', ['ngCordova'])
      });
 })
 
+.controller('adocaoCTRL', function($scope, $stateParams,$ionicLoading, wsPet, Auth) {
+   $scope.pets_list='';
+   $scope.pets_list =  wsPet.getAdocao();
+})
+
 .controller('detalhesCTRL', function($scope, $stateParams, Pet) {
    // QRCode generator
    var qrcode = new QRCode("qrcode",{
