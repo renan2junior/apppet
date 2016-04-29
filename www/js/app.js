@@ -1,8 +1,17 @@
 var fb = new Firebase('https://apppetidentidade.firebaseio.com/');
-angular.module('starter', ['ionic', 'firebase','ngCordova','starter.configs','starter.services','starter.controllers'])
+
+angular.module('starter', ['ionic','ionic.service.core', 'firebase','ngCordova','starter.configs','starter.services','starter.controllers'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
+    var push = new Ionic.Push({
+      "debug": true
+    });
+
+    push.register(function(token) {
+      console.log("Device token:",token.token);
+      //alert("Device token:"+token.token);
+    });
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);

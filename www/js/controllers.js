@@ -58,19 +58,31 @@ angular.module('starter.controllers', ['ngCordova'])
 .controller('meuregistroCTRL', function($scope, $stateParams, Auth, RefBase, Usuario) {
     Auth.$onAuth(function(authData){
         $scope.authData = authData; 
+         $scope.dados = Usuario.getUser(btoa($scope.authData.facebook.id));
     });
-   
-     $scope.dados = Usuario.new;
+        
      $scope.btsave = function(){
         $scope.dados.nome = $scope.authData.facebook.displayName;
+        $scope.dados.displayName = $scope.authData.facebook.displayName;
         $scope.dados.id = $scope.authData.facebook.id;
         $scope.dados.avatar = $scope.authData.facebook.profileImageURL;
         var usuario = RefBase.child("users");
-        var id_user = usuario.child(btoa($scope.dados.id.id));
+        var id_user = usuario.child(btoa($scope.authData.facebook.id));
+
+           var user_update = Usuario.new();
+           user_update.nome = $scope.dados.nome;
+           user_update.avatar = $scope.dados.avatar;
+           user_update.not_resgate = $scope.dados.not_resgate;
+           user_update.endereco = $scope.dados.endereco;
+           user_update.celular = $scope.dados.celular;
+           user_update.fixo = $scope.dados.fixo;
+           user_update.displayName = $scope.dados.displayName;
+
+        
         if(!id_user){
-            usuario.child(btoa($scope.dados.id)).set($scope.dados);
+            usuario.child(btoa($scope.authData.facebook.id)).set($scope.dados);
         }else{
-            id_user.update($scope.dados);
+            id_user.update(user_update);
         }
     }
 })

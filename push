@@ -1,0 +1,8 @@
+curl -X POST -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJlYThhNDZiNy0wODQxLTRmMzgtOGZjYS0zYjM1ZDIyZWZiYTkifQ.UUZuSwCfWMY646e7WXRYqKwPEOHl5O2lucmlvYOH7js" -H "Content-Type: application/json" -d '{
+    "tokens": ["DEV-69b47bc3-afd7-4fca-8fe0-23fd345e8317"],
+    "profile": "teste",
+    "notification": {
+        "message": "Notificação Chegando!!"
+    }
+}' "https://api.ionic.io/push/notifications"
+

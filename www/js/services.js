@@ -76,6 +76,7 @@ angular.module('starter.services', [])
 .factory('Usuario', function (WS_FIREBASE_CFG, $firebaseObject) {
     var Usuario = {
         get: function (petId) {
+            
             return $firebaseObject(WS_FIREBASE_CFG.baseRef.child('pets').child(petId));
         },
         new: function(){
@@ -86,9 +87,14 @@ angular.module('starter.services', [])
                 celular : '21 99998888',
                 fixo : '21 33339999',
                 endereco : 'Rua Tal',
-                email : 'meu@gmail.com'
+                email : 'meu@gmail.com',
+                not_resgate:''
             }
             return new_usuario;
+        },
+        getUser: function(idUser){
+            //console.log("IDUSER === >", idUser);
+            return $firebaseObject(WS_FIREBASE_CFG.baseRef.child('users').child(idUser));
         }
     };
     return Usuario;
