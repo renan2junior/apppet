@@ -37,7 +37,14 @@
         "phonegap-plugin-push": {
             "SENDER_ID": "c2ac8dbe",
             "PACKAGE_NAME": "com.ionicframework.apppet299557"
+        },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "com.ionicframework.apppet299557"
         }
     },
-    "dependent_plugins": {}
+    "dependent_plugins": {
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "com.ionicframework.apppet299557"
+        }
+    }
 }

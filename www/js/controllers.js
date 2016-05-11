@@ -106,53 +106,124 @@ angular.module('starter.controllers', ['ngCordova'])
    $scope.pets_list =  wsPet.getAdocao();
 })
 
-.controller('detalhesCTRL', function($scope, $stateParams, Pet) {
-   // QRCode generator
-   var qrcode = new QRCode("qrcode",{
-        width: 100,
-        height: 100,
-        colorDark : "#000000",
-        colorLight : "#ffffff",
-        correctLevel : QRCode.CorrectLevel.H
+.controller('detalhesCTRL', function($scope, $state ,$ionicPopup, $stateParams, Pet, $ionicLoading, $compile) {
+  
+  var pet_busca = Pet.get($stateParams.pet_name);
+   if (pet_busca) {
+       $scope.pet_busca = pet_busca; 
+    } else {
+       $ionicPopup.alert({
+            title: 'Busca Animal',
+            template: 'Erro ao buscar o animal selecionado!'
+       });
+  }
+  $scope.initialize = function() {
+    var myLatlng = new google.maps.LatLng(43.07493,-89.381388);
+    var mapOptions = {
+      center: myLatlng,
+      zoom: 16,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("map"),
+        mapOptions);
+    var marker = new google.maps.Marker({
+      position: myLatlng,
+      map: map,
+      title: 'Uluru (Ayers Rock)'
     });
-    qrcode.makeCode($stateParams.pet_name);
-    $scope.pet_busca = Pet.get($stateParams.pet_name);
+    google.maps.event.addListener(marker, 'click', function() {
+      infowindow.open(map,marker);
+    });
+    $scope.map = map;
+  }
+    function geocodeAddress() {
+        $scope.pet_busca.$loaded().then(function () {
+                var petMap = $scope.pet_busca;
+                new google.maps.Geocoder().geocode({'address': petMap.pet_endereco}, function(results, status) {
+                    if (status === google.maps.GeocoderStatus.OK) {
+                            $scope.map.setCenter(results[0].geometry.location);
+                            google.maps.event.addListenerOnce($scope.map, 'idle', function(){
+                                var marker = new google.maps.Marker({
+                                        map: $scope.map,
+                                        position: results[0].geometry.location
+                                });    
+                            });
+                    } else {
+                            $ionicPopup.alert({ 
+                                title: 'Erro',
+                                template: 'Erro ao buscar endereço! '
+                            });
+                    }
+                });
+        });
+    }
+    geocodeAddress();
 })
 
 .controller('buscapetCTRL', function($scope, $stateParams, $cordovaBarcodeScanner, Pet) {
-    $scope.pet_busca = '';
     $scope.result = false;
      $scope.scanBarcode = function() {
         $cordovaBarcodeScanner.scan().then(function(imageData) {
-            $scope.pet_busca = Pet.get(imageData.text);
-            if($scope.pet_busca){
-                $scope.result = true;
-                // QRCode generator
-                var qrcode = new QRCode("qrcode",{
-                        width: 100,
-                        height: 100,
-                        colorDark : "#000000",
-                        colorLight : "#ffffff",
-                        correctLevel : QRCode.CorrectLevel.H
-                    });
-
-                function makeCode () {
-                    console.log($scope.pet_busca.pet_name);      
-                    qrcode.makeCode($scope.pet_busca.pet_name);
-                }
-                makeCode();    
-            }else{
-                alert("Pet não encontrado !");
-            }
+            $scope.result = true;
+            var pet_busca = Pet.get(imageData.text);
+            $scope.pet_busca = pet_busca;
         }, function(error) {
             console.log("An error happened -> " + error);
+            $ionicPopup.alert({
+                        title: 'Registro',
+                        template: 'ERRo'
+                    });
         });
     };
+    
+    
+    
+    
+    var myLatlng = new google.maps.LatLng(43.07493,-89.381388);
+    var mapOptions = {
+      center: myLatlng,
+      zoom: 16,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("map"),
+        mapOptions);
+    var marker = new google.maps.Marker({
+      position: myLatlng,
+      map: map,
+      title: 'Uluru (Ayers Rock)'
+    });
+    google.maps.event.addListener(marker, 'click', function() {
+      infowindow.open(map,marker);
+    });
+    $scope.map = map;
+
+    function geocodeAddress() {
+        $scope.pet_busca.$loaded().then(function () {
+                var petMap = $scope.pet_busca;
+                new google.maps.Geocoder().geocode({'address': petMap.pet_endereco}, function(results, status) {
+                    if (status === google.maps.GeocoderStatus.OK) {
+                            $scope.map.setCenter(results[0].geometry.location);
+                            google.maps.event.addListenerOnce($scope.map, 'idle', function(){
+                                var marker = new google.maps.Marker({
+                                        map: $scope.map,
+                                        position: results[0].geometry.location
+                                });    
+                            });
+                    } else {
+                            $ionicPopup.alert({ 
+                                title: 'Erro',
+                                template: 'Erro ao buscar endereço! '
+                            });
+                    }
+                });
+        });
+    }
+    
 })
 
-.controller('registropetCTRL', function($scope, $stateParams, $cordovaCamera, Pet, RefBase, Auth) {
-   $scope.dados = Pet.new();
-   
+.controller('registropetCTRL', function($scope, $state, $stateParams, $cordovaCamera, Pet, RefBase, Auth, $ionicPopup) {
+   $scope.dados = {}
+
    // Dados do usuario
    Auth.$onAuth(function(authData){
         $scope.authData = authData; 
@@ -165,20 +236,21 @@ angular.module('starter.controllers', ['ngCordova'])
            
    // Save pet    
    $scope.savepet = function(){
-       $scope.showLoader();
-       var pets = RefBase.child("pets");
-       var pet = pets.child($scope.dados.pet_name);
-        if(!pet){
-               
-                pets.child($scope.dados.pet_name.set($scope.dados)).then(function(){
-                    $scope.dados.pet_name = " ";
-                    $scope.hideLoader();
-                });
-            }else{
-                pet.update($scope.dados);
-                console.log("O id é : ", $scope.dados.toString());
-            }
-            $scope.dados.pet_name = " ";
+       Pet.addPet($scope.dados, function(msg){
+          if (msg === 'erro') {
+              $ionicPopup.alert({
+                  title: 'Registro',
+                  template: 'Erro ao registrar animal!'
+              });  
+          } else {
+              $ionicPopup.alert({
+                  title: 'Registro',
+                  template: 'Animal registrado com sucesso!'
+              }).then(function(){
+                 $state.go('app.meuspets', {id :msg});   
+              });
+          }
+      });
    }
    
    // upload image 
@@ -217,6 +289,6 @@ angular.module('starter.controllers', ['ngCordova'])
         console.log($scope.dados.pet_name);      
         qrcode.makeCode($scope.dados.pet_name);
     }
-   makeCode();
+   //makeCode();
 });
 

@@ -1,7 +1,7 @@
 <ion-view view-title="Lista para adoção">
   <ion-content>
       <ion-list class="list">
-        <ion-item class="item item-thumbnail-left" ng-repeat="pet_linha in pets_list" href="#/app/detalhes_pet/{{pet_linha.pet_name}}">
+        <ion-item class="item item-thumbnail-left" ng-repeat="pet_linha in pets_list" href="#/app/detalhes_pet/{{pet_linha.$id}}">
                     <img width="50" height="50" src="{{pet_linha.pet_image}}">
                     <h2>{{pet_linha.pet_name}}</h2>
                     <p>{{pet_linha.pet_raca}}</p>

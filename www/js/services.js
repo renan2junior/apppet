@@ -53,21 +53,39 @@ angular.module('starter.services', [])
         get: function (petId) {
             return $firebaseObject(WS_FIREBASE_CFG.baseRef.child('pets').child(petId));
         },
-        new: function(){
-            var new_pet = {
-                pet_name: 'Toto',
-                pet_racao: 'Rui',
-                pet_idade: '2',
-                pet_image: 'http://thewatchfullepisodes.com/wp-content/uploads/2016/03/no-image.png',
-                pet_sexo:'macho',
-                pet_tipo_idade:'anos',
-                pet_descricao:'Bom',
-                pet_porte:'pequeno',
-                pet_raca:'Viralata',
-                pet_tipo:'cao',
-                pet_user:''
+        addPet: function(pet, callback) {
+            
+            var pet = WS_FIREBASE_CFG.baseRef.child('pets').child($scope.dados.pet_name);
+            if(!pet){
+                var push = WS_FIREBASE_CFG.baseRef.child('pets').push();
+                var key = push.key();
+                push.set(pet, function(error){
+                    if (error) {
+                        callback('erro');
+                    } else {
+                        callback(key);
+                    }
+                });
+            }else{
+                var update = WS_FIREBASE_CFG.baseRef.child('pets').update;
+                var key = push.key();
+                push.update(pet, function(error){
+                    if (error) {
+                        callback('erro');
+                    } else {
+                        callback(key);
+                    }
+                });
             }
-            return new_pet;
+        },
+        getID: function(pepetIdt) {
+            var pet = $firebaseObject(WS_FIREBASE_CFG.baseRef.child('pets').child(pepetIdt));
+            if(!pet){
+                      pet.msg = "erro";  
+                      return "erro";
+            }else{
+                      return pet;
+            }
         }
     };
     return Pet;

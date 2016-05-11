@@ -17,6 +17,15 @@ wellcome{
     background-color: #b34e4e;
 }
 
+.scroll {
+    height: 100%;
+}
+ 
+#map {
+    width: 100%;
+    height: 50%;
+}
+
 .login {
     background: url(../img/welcome.png);
     background-repeat: repeat;

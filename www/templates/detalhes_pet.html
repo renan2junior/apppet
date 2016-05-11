@@ -1,51 +1,42 @@
 <ion-view view-title="Detalhe Pet">
-    <ion-content>
+    <ion-content ng-init="initialize()">
         <ion-item >
           <ion-card>
-                <div class="row">
-                    <div class="col"><div id="qrcode"></div></div>
-                    <div class=".col-50"><img src="{{pet_busca.pet_image}}" height="50" width="100"></div>
-                </div>
+            <a class="item item-thumbnail-left" href="#">
+                <img src="{{pet_busca.pet_image}}">
+                <h2>{{pet_busca.pet_name}}</h2>
+                <p>{{pet_busca.pet_sexo}}</p>
+            </a>
         </ion-card>    
-         <label class="item item-input item-stacked-label">
-            <ion-label>Nome</ion-label>
-            <ion-label> {{pet_busca.pet_name}} </ion-label>
-         </label>
-        
-        <label class="item item-input item-stacked-label">
-            <ion-label>Sexo </ion-label>
-           <ion-label> {{pet_busca.pet_sexo}}</ion-label>
-        </label>
-        
         <label class="item item-input item-stacked-label">
             <ion-label>Idade</ion-label>
             <ion-label> {{pet_busca.pet_idade}}</ion-label>
         </label>
-        
         <label class="item item-input item-stacked-label">
             <ion-label>Tipo da Idade</ion-label>
             <ion-label> {{pet_busca.pet_tipo_idade}}</ion-label>
         </label>
-        
         <label class="item item-input item-stacked-label">
             <ion-label>Descrição</ion-label>
             <ion-label> {{pet_busca.pet_descricao}}</ion-label>
         </label>
-        
         <label class="item item-input item-stacked-label">
             <ion-label>Porte</ion-label>
             <ion-label> {{pet_busca.pet_sexo}}</ion-label>
         </label>
-        
         <label class="item item-input item-stacked-label">
             <ion-label>Raça</ion-label>
             <ion-label> {{pet_busca.pet_porte}}</ion-label>
         </label>
-        
         <label class="item item-input item-stacked-label">
             <ion-label>Tipo</ion-label>
             <ion-label> {{pet_busca.pet_tipo}}</ion-label>
         </label>
+        </br>
+         <h3>{{pet_busca.pet_endereco}}</h3>
         </ion-item>
+        <ion-card>
+              <div id="map" data-tap-disabled="true"></div>
+        </ion-card> 
     </ion-content>
 </ion-view>
